@@ -23,6 +23,7 @@ jobs:
           FIXER_API_KEY: ${{ secrets.FIXER_API_KEY }}
       - name: Commit files
         run: |
+          git add rates
           git config --local user.email "liam@freighter.studio"
           git config --local user.name "Liam Martens"
           git commit -m "Updated exchange rates"
