@@ -19,6 +19,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
       - run: node ./scripts/update-source.js
+        with:
+          FIXER_API_KEY: ${{ secrets.FIXER_API_KEY }}
       - name: Commit files
         run: |
           git config --local user.email "liam@freighter.studio"
