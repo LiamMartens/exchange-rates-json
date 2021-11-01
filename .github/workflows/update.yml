@@ -1,0 +1,29 @@
+name: Update Exchange Rates
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['16']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: node ./scripts/update-source.js
+      - name: Commit files
+        run: |
+          git config --local user.email "liam@freighter.studio"
+          git config --local user.name "Liam Martens"
+          git commit -m "Updated exchange rates"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
